@@ -1,0 +1,5 @@
+rootProject.name = 'spring-sample-truck-root'
+
+include 'spring-sample-truck-frontend'
+include 'spring-sample-truck-rest'
+include 'spring-sample-truck-backend'

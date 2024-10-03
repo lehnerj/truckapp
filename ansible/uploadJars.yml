@@ -1,0 +1,43 @@
+---
+- name: Upload Spring Boot Jars to remote hosts
+  hosts: frontend, restfacade, backend
+
+  tasks:
+    - name: Check if jre17.tar exists
+      stat:
+        path: "~/jre17.tar"
+      register: result
+    - name: Download jre17
+      ansible.builtin.get_url:
+        url: 'https://api.adoptium.net/v3/binary/latest/17/ga/linux/x64/jre/hotspot/normal/eclipse'
+        dest: ~/jre17.tar
+        mode: '0440'
+      when: not result.stat.exists
+
+    - name: Check if jre17 directory
+      stat:
+        path: "~/jre17"
+      register: resultJre17Dir
+
+    - name: Unarchive a file that is already on the remote machine
+      ansible.builtin.unarchive:
+        src: ~/jre17.tar
+        dest: ~/
+        remote_src: yes
+        list_files: yes
+      register: archive_contents
+      when: not resultJre17Dir.stat.exists
+
+    - name: Print archive contents
+      debug:
+        msg: "{{ archive_contents }}"
+
+    - name: Move jre to jre17
+      command: ln -s {{ archive_contents.files[0] }} ~/jre17
+      when: not resultJre17Dir.stat.exists
+
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: "../{{ jar_file_path }}"
+        dest: ~/
+        mode: '0644'
