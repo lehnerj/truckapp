@@ -1,0 +1,16 @@
+---
+- name: Prepare remote Linux VM
+  hosts: all
+  tasks:
+    - name: "Install Podman"
+      package:
+        name: "podman"
+        state: present
+      become: true
+    - name: "Enable Linger so Podman containers keep running ..."
+      # Without Linger the Podman containers will be stopped after a few seconds as the Ansible playbook finished and no user is logged in
+      # E.g. Podman will print a message such as the following with: podman ps -a
+      # ERRO[0000] Refreshing container 3b82ce4f57e888be755df58f303c55b9ecff03794344bd4ac1a4ec6298f2f865: acquiring lock 5 for container 3b82ce4f57e888be755df58f303c55b9ecff03794344bd4ac1a4ec6298f2f865: file exists
+      # See also https://github.com/containers/podman/issues/16784
+      # See also https://access.redhat.com/solutions/7054698
+      command: loginctl enable-linger

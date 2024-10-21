@@ -1,0 +1,8 @@
+.idea
+.gradle
+/spring-sample-truck-frontend/build/
+/spring-sample-truck-rest/build/
+/spring-sample-truck-backend/build/
+spring-sample-truck-frontend-0.0.1-SNAPSHOT.jar
+spring-sample-truck-rest-0.0.2-SNAPSHOT.jar
+spring-sample-truck-backend-0.0.3-SNAPSHOT.jar

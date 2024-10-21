@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: truck-restfacade-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: truck-restfacade-deployment
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: truck-restfacade-deployment
+    spec:
+      containers:
+        - name: truck-backend
+          image: docker.io/lehnerj/lehnerj:spring-sample-truck-rest
+          env:
+            - name: TRUCK_TARGETENDPOINT
+              value: truck-backend-service:8082
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://truck-auditdb-service:8091/auditdb

@@ -1,0 +1,21 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: truck-backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: truck-backend-deployment
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: truck-backend-deployment
+    spec:
+      containers:
+        - name: truck-backend
+          image: docker.io/lehnerj/lehnerj:spring-sample-truck-backend
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://truck-truckdb-service:8090/truckdb

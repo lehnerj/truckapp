@@ -32,7 +32,7 @@
       debug:
         msg: "{{ archive_contents }}"
 
-    - name: Move jre to jre17
+    - name: Symlink jre to jre17
       command: ln -s {{ archive_contents.files[0] }} ~/jre17
       when: not resultJre17Dir.stat.exists
 

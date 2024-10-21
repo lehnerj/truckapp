@@ -1,0 +1,33 @@
+---
+- name: Startup database container
+  hosts: truckdb, auditdb
+  tasks:
+    - name: "Startup the database container"
+      # delegate_to: 127.0.0.1
+      containers.podman.podman_container:
+        name: "{{ imageName }}"
+        image: "{{ image }}"
+        env:
+          MYSQL_USER: dbuser
+          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: "{{ database }}"
+        volume:
+          - "{{ volume }}"
+        publish: "{{ publish }}"
+        state: started
+
+- name: Startup Podman container
+  hosts: backend, restfacade, frontend
+  serial: 1
+  tasks:
+    - name: "Startup the Spring Boot app"
+      # delegate_to: 127.0.0.1
+      containers.podman.podman_container:
+        name: "{{ imageName }}"
+        image: "{{ image }}"
+        env:
+          TRUCK_TARGETENDPOINT: "{{ truckTargetEndpoint }}"
+          SPRING_DATASOURCE_URL: "{{ springDatasourceUrl }}"
+        publish: "{{ publish }}"
+        state: started
