@@ -1,15 +1,16 @@
 #!/bin/bash
 
-sudo yum install -y bc
+# sudo yum install -y bc
 
 maxDelayMs=1000
 endpoint=<HOST>:8080
 
 # Example requests
-# request="http://$endpoint/truckfrontend/release?stallOp=cpu&stallSec=5"
+# request="http://$endpoint/truckfrontend/release"
 # request="http://$endpoint/truckfrontend/release?stallSec=3"
-# request="http://$endpoint/truckfrontend/truck/EMEA-AT-431?stallSec=4"
+# request="http://$endpoint/truckfrontend/release?stallOp=cpu&stallSec=5"
 request="http://$endpoint/truckfrontend/truck/EMEA-AT-431"
+# request="http://$endpoint/truckfrontend/truck/EMEA-AT-431?stallSec=4"
 while true
 do
  ts=$(date +%s%N)
